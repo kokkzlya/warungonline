@@ -1,19 +1,45 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="uk-padding uk-background-primary uk-light uk-panel">
-  <div class="uk-container">
-    <div class="row">
-      <div class="col-md-12">
-        <h1>Welcome to Warung Online</h1>
+<div class="uk-container uk-margin-top">
+  <h1 class="uk-text-lead uk-margin">Detail Produk</h1>
+
+  <form method="post" class="uk-form-horizontal">
+    <div class="uk-margin">
+      <label class="uk-form-label" for="form-horizontal-text">
+        Nama Produk
+      </label>
+      <div class="uk-form-controls">
+        <p>{{ product.name }}</p>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-12">
-        <p class="uk-text-default">The best place to buy jajanan warung</p>
+    <div class="uk-margin">
+      <label class="uk-form-label" for="form-horizontal-text">
+        Deskripsi
+      </label>
+      <div class="uk-form-controls">
+        <p>{{ product.description|safe }}</p>
       </div>
     </div>
-  </div>
+
+    <div class="uk-margin">
+      <label class="uk-form-label" for="form-horizontal-text">
+        Harga
+      </label>
+      <div class="uk-form-controls">
+        <p>Rp {{ product.price }}</p>
+      </div>
+    </div>
+
+    <div class="uk-margin">
+      <label class="uk-form-label" for="form-horizontal-text">
+        Stok
+      </label>
+      <div class="uk-form-controls">
+        <p>{{ product.stock }}</p>
+      </div>
+    </div>
+  </form>
 </div>
 {% endblock %}

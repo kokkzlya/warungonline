@@ -19,7 +19,7 @@ di.init_app(app)
 @inject.autoparams("conn")
 def landing_page(conn: sqlite3.Connection):
     cur = conn.cursor()
-    cur.execute("SELECT id, name, description, price, stock FROM products")
+    cur.execute("SELECT id, name, description, price, stock FROM products LIMIT 9")
     result = cur.fetchall()
     products = []
     for row in result:
@@ -60,7 +60,7 @@ def login(conn: sqlite3.Connection):
 def products_page(conn: sqlite3.Connection):
     category = request.args.get("category", None)
     cur = conn.cursor()
-    q = "SELECT id, name, description, price, stock FROM products"
+    q = "SELECT id, name, description, category, price, stock FROM products"
     if category:
         q += " WHERE category = '" + category + "'"
     cur.execute(q)
@@ -71,8 +71,8 @@ def products_page(conn: sqlite3.Connection):
             id=row[0],
             name=row[1],
             description=row[2],
-            price=row[3],
-            stock=row[4],
+            price=row[4],
+            stock=row[5],
         ))  
     return render_template("products.html", products=products)
 
@@ -111,6 +111,23 @@ def create_product(conn: sqlite3.Connection):
         (id, name, description, category, price, stock)
     )
     return redirect(url_for("landing_page"))
+
+@app.route("/products/<product_id>", methods=["GET"])
+@inject.autoparams("conn")
+def product_page(product_id: str, conn: sqlite3.Connection):
+    cur = conn.cursor()
+    cur.execute("SELECT id, name, description, price, stock FROM products WHERE id = ? LIMIT 1", (product_id,))
+    result = cur.fetchone()
+    if not result:
+        return render_template("404.html"), 404
+    product = Product(
+        id=result[0],
+        name=result[1],
+        description=result[2],
+        price=result[3],
+        stock=result[4],
+    )
+    return render_template("product_detail.html", product=product)
 
 @app.route("/register", methods=["POST"])
 @inject.autoparams("conn")
