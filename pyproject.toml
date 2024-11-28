@@ -12,6 +12,8 @@ flask = "^3.1.0"
 fire = "^0.7.0"
 shortuuid = "^1.0.13"
 inject = "^5.2.1"
+html-sanitizer = "^2.4.4"
+bcrypt = "^4.2.1"
 
 
 [build-system]
