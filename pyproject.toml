@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "warungonline"
+version = "0.1.0"
+description = ""
+authors = ["Edbert Wijaya Irawan"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+cryptography = "^43.0.3"
+flask = "^3.1.0"
+fire = "^0.7.0"
+shortuuid = "^1.0.13"
+inject = "^5.2.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

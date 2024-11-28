@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="uk-container uk-flex uk-flex-center uk-flex-middle" uk-height-viewport>
+  <form method="post" class="uk-form-stacked uk-width-1-4@l uk-width-1-4@xl">
+    <h1 class="uk-text-lead">Login</h1>
+    {% if error %}
+      <div class="uk-alert-danger" uk-alert>
+        <a class="uk-alert-close" uk-close></a>
+        <p>{{ error }}</p>
+      </div>
+    {% endif %}
+    <div class="uk-margin">
+      <div class="uk-form-controls">
+        <input
+          type="text"
+          id="username"
+          name="username"
+          class="uk-input"
+          placeholder="Username"
+          value="{{ username }}"
+        >
+      </div>
+    </div>
+    <div class="uk-margin">
+      <div class="uk-form-controls">
+        <input type="password" id="password" name="password" class="uk-input" placeholder="Password">
+      </div>
+    </div>
+    <button type="submit" class="uk-button uk-button-primary uk-width-1-1">
+      Login
+    </button>
+  </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    feather.replace();
+  </script>
+{% endblock %}

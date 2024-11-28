@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+  <title>{% block title %}Warung Online{% endblock %}</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.21.13/dist/css/uikit.min.css" /> -->
+  <link rel="stylesheet" href="/public/uikit/css/uikit.min.css" />
+  {% block styles %}{% endblock %}
+
+  <script src="/public/uikit/js/uikit.min.js"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+  <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; end: + *;">
+    <nav class="uk-navbar-container">
+      <div class="uk-container">
+        <div uk-navbar>
+          <div class="uk-navbar-left">
+            <a class="uk-navbar-item uk-logo" href="{{ url_for('landing_page') }}">WarungOnline</a>
+          </div>
+          <div class="uk-navbar-right">
+            <ul class="uk-navbar-nav">
+              <li><a href="{{ url_for('landing_page') }}">Home</a></li>
+              <li><a href="{{ url_for('login_page') }}">Login</a></li>
+              <li><a href="{{ url_for('register_page') }}">Register</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  {% block content %}{% endblock %}
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>
