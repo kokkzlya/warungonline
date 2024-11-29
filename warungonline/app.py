@@ -1,21 +1,14 @@
 import inject
 import shortuuid
 import sqlite3
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Blueprint, Flask, redirect, render_template, request, url_for
 
-import db
-import di
-from entities import Product, User
+from warungonline import db, di
+from warungonline.entities import Product, User
 
-app = Flask(
-    __name__,
-    static_folder="../public",
-    static_url_path="/public",
-)
-db.init_app(app)
-di.init_app(app)
+bp = Blueprint(__name__, "app")
 
-@app.route("/", methods=["GET"])
+@bp.route("/", methods=["GET"])
 @inject.autoparams("conn")
 def landing_page(conn: sqlite3.Connection):
     cur = conn.cursor()
@@ -32,11 +25,11 @@ def landing_page(conn: sqlite3.Connection):
         ))
     return render_template("index.html", products=products)
 
-@app.route("/login", methods=["GET"])
+@bp.route("/login", methods=["GET"])
 def login_page():
     return render_template("login.html")
 
-@app.route("/login", methods=["POST"])
+@bp.route("/login", methods=["POST"])
 @inject.autoparams("conn")
 def login(conn: sqlite3.Connection):
     cur = conn.cursor()
@@ -53,9 +46,9 @@ def login(conn: sqlite3.Connection):
         username=username,
         name=result[1],
     )
-    return redirect(url_for("landing_page"))
+    return redirect(url_for("app.landing_page"))
 
-@app.route("/products", methods=["GET"])
+@bp.route("/products", methods=["GET"])
 @inject.autoparams("conn")
 def products_page(conn: sqlite3.Connection):
     category = request.args.get("category", None)
@@ -76,11 +69,11 @@ def products_page(conn: sqlite3.Connection):
         ))  
     return render_template("products.html", products=products)
 
-@app.route("/products/new", methods=["GET"])
+@bp.route("/products/new", methods=["GET"])
 def new_product_page():
     return render_template("new_product.html")
 
-@app.route("/products/new", methods=["POST"])
+@bp.route("/products/new", methods=["POST"])
 @inject.autoparams("conn")
 def create_product(conn: sqlite3.Connection):
     name = request.form.get("name")
@@ -110,9 +103,9 @@ def create_product(conn: sqlite3.Connection):
         "INSERT INTO products (id, name, description, category, price, stock) VALUES (?, ?, ?, ?, ?, ?)",
         (id, name, description, category, price, stock)
     )
-    return redirect(url_for("landing_page"))
+    return redirect(url_for("app.landing_page"))
 
-@app.route("/products/<product_id>", methods=["GET"])
+@bp.route("/products/<product_id>", methods=["GET"])
 @inject.autoparams("conn")
 def product_page(product_id: str, conn: sqlite3.Connection):
     cur = conn.cursor()
@@ -129,7 +122,7 @@ def product_page(product_id: str, conn: sqlite3.Connection):
     )
     return render_template("product_detail.html", product=product)
 
-@app.route("/register", methods=["POST"])
+@bp.route("/register", methods=["POST"])
 @inject.autoparams("conn")
 def register(conn: sqlite3.Connection):
     cur = conn.cursor()
@@ -163,13 +156,13 @@ def register(conn: sqlite3.Connection):
         "INSERT INTO users (id, username, password, name, role) VALUES (?, ?, ?, ?, ?)",
         (id, username, password, name, role)
     )
-    return redirect(url_for("landing_page"))
+    return redirect(url_for("app.landing_page"))
 
-@app.route("/register", methods=["GET"])
+@bp.route("/register", methods=["GET"])
 def register_page():
     return render_template("register.html")
 
-@app.route("/users", methods=["GET"])
+@bp.route("/users", methods=["GET"])
 @inject.autoparams("conn")
 def users_page(conn: sqlite3.Connection):
     cur = conn.cursor()
@@ -185,5 +178,13 @@ def users_page(conn: sqlite3.Connection):
         ))
     return render_template("users.html", users=users)
 
-if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+def create_app():
+    app = Flask(
+        __name__,
+        static_folder="../public",
+        static_url_path="/public",
+    )
+    app.register_blueprint(bp)
+    db.init_app(app)
+    di.init_app(app)
+    return app

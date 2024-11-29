@@ -1,7 +1,7 @@
 import inject
 import sqlite3
 
-from db import get_conn
+from warungonline.db import get_conn
 
 def init_app(app):
     def configure(binder):

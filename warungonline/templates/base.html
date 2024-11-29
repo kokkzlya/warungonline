@@ -18,13 +18,13 @@
       <div class="uk-container">
         <div uk-navbar>
           <div class="uk-navbar-left">
-            <a class="uk-navbar-item uk-logo" href="{{ url_for('landing_page') }}">WarungOnline</a>
+            <a class="uk-navbar-item uk-logo" href="{{ url_for('app.landing_page') }}">WarungOnline</a>
           </div>
           <div class="uk-navbar-right">
             <ul class="uk-navbar-nav">
-              <li><a href="{{ url_for('landing_page') }}">Home</a></li>
-              <li><a href="{{ url_for('login_page') }}">Login</a></li>
-              <li><a href="{{ url_for('register_page') }}">Register</a></li>
+              <li><a href="{{ url_for('app.landing_page') }}">Home</a></li>
+              <li><a href="{{ url_for('app.login_page') }}">Login</a></li>
+              <li><a href="{{ url_for('app.register_page') }}">Register</a></li>
             </ul>
           </div>
         </div>
