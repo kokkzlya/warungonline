@@ -12,7 +12,8 @@ def init_app(app: Flask):
         id TEXT PRIMARY KEY,
         username TEXT,
         password TEXT,
-        name TEXT
+        name TEXT,
+        role TEXT
     )
     """
     )

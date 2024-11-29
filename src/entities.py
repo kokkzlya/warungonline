@@ -6,6 +6,7 @@ class User:
     username: str | None = None
     name: str | None = None
     password: str | None = None
+    role: str | None = None
 
 @dataclass
 class Product:

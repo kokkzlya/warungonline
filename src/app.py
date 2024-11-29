@@ -158,9 +158,10 @@ def register(conn: sqlite3.Connection):
             username=username,
         )
     id = shortuuid.uuid()
+    role = "user"
     cur.execute(
-        "INSERT INTO users (id, username, password, name) VALUES (?, ?, ?, ?)",
-        (id, username, password, name)
+        "INSERT INTO users (id, username, password, name, role) VALUES (?, ?, ?, ?, ?)",
+        (id, username, password, name, role)
     )
     return redirect(url_for("landing_page"))
 
@@ -172,7 +173,7 @@ def register_page():
 @inject.autoparams("conn")
 def users_page(conn: sqlite3.Connection):
     cur = conn.cursor()
-    cur.execute("SELECT id, username, name FROM users")
+    cur.execute("SELECT id, username, name, role FROM users")
     result = cur.fetchall()
     users = []
     for row in result:
@@ -180,6 +181,7 @@ def users_page(conn: sqlite3.Connection):
             id=row[0],
             username=row[1],
             name=row[2],
+            role=row[3],
         ))
     return render_template("users.html", users=users)
 
