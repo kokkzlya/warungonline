@@ -6,7 +6,7 @@ from flask import Blueprint, Flask, redirect, render_template, request, url_for
 from warungonline import db, di
 from warungonline.entities import Product, User
 
-bp = Blueprint(__name__, "app")
+bp = Blueprint("app", __name__)
 
 @bp.route("/", methods=["GET"])
 @inject.autoparams("conn")
